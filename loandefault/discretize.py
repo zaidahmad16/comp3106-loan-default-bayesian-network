@@ -8,17 +8,13 @@ NUMERIC = [
 
 RARE_FRACTION = 0.01
 RARE = "other"
-MISSING = "missing"
 
 
 def make_labels(values, edges):
     if edges is None:
-        labels = values.astype(str)
-    else:
-        codes = np.searchsorted(edges, values.to_numpy(dtype=float), side="left")
-        labels = pd.Series(codes, index=values.index).astype(str)
-    labels[values.isna()] = MISSING
-    return labels
+        return values.astype(str)
+    codes = np.searchsorted(edges, values.to_numpy(dtype=float), side="left")
+    return pd.Series(codes, index=values.index).astype(str)
 
 
 def fit_discretizer(features, n_bins):
@@ -38,7 +34,7 @@ def fit_discretizer(features, n_bins):
         counts = labels.value_counts()
         keep = []
         for label in counts.index:
-            if counts[label] >= min_count or label == MISSING:
+            if counts[label] >= min_count:
                 keep.append(label)
 
         rules[column] = {"edges": edges, "keep": keep}
