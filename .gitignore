@@ -1,5 +1,6 @@
-.venv
+.venv/
 __pycache__/
 .pytest_cache/
 data/*
 !data/.gitkeep
+!data/german_split.json
